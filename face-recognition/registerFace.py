@@ -1,12 +1,49 @@
-#! /usr/bin/python
-
+import picamera
+import cv2
+import os
 # import the necessary packages
 from imutils import paths
 import face_recognition
 #import argparse
 import pickle
-import cv2
-import os
+
+name = str(input("Enter your Name: "))
+
+print("[INFO] Registering user {}" .format(name))
+
+cam = picamera.PiCamera()
+time.sleep(2.0)
+
+cv2.namedWindow("Press space to register your face.", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Press space to register your face.", 500, 300)
+
+img_counter = 0
+
+while True:
+	frame = cam.source_camera()
+	if frame is None:
+		print("Failed to capture image from camera")
+		break
+    cv2.imshow("Press space to register your face.", frame)
+
+    k = cv2.waitKey(1)
+    if k%256 == 27:
+        # ESC pressed
+        print("Escape hit, closing...")
+        break
+    elif k%256 == 32:
+        # SPACE pressed
+        command = "mkdir -p ./dataset/" + name
+        os.system(command)
+        img_name = "./dataset/"+ name +"/image_{}.jpg".format(img_counter)
+        cv2.imwrite(img_name, frame)
+        print("{} written!".format(img_name))
+        img_counter += 1
+        break
+
+cam.release()
+
+cv2.destroyAllWindows()
 
 # our images are located in the dataset folder
 print("[INFO] start processing faces...")
@@ -44,8 +81,9 @@ for (i, imagePath) in enumerate(imagePaths):
 		knownNames.append(name)
 
 # dump the facial encodings + names to disk
-print("[INFO] serializing encodings...")
+
 data = {"encodings": knownEncodings, "names": knownNames}
 f = open("encodings.pickle", "wb")
 f.write(pickle.dumps(data))
 f.close()
+print("[INFO] Face registered..")
