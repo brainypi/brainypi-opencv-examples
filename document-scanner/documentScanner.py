@@ -2,25 +2,26 @@
 import picamera
 import cv2
 import numpy as np
-import docScannerUtlis
+import docScannerUtils
+import time
 
 def main():
     cam = picamera.PiCamera()
     time.sleep(2.0)
-    docScannerUtlis.initializeTrackbars()
+    docScannerUtils.initializeTrackbars()
     count = 0
     while True:
         img = cam.source_camera()
         if img is None:
             print("Failed to capture image from camera")
 
-        imageArray = scanDocumentsInImage(inputImage)
+        imageArray = docScannerUtils.scanDocumentsInImage(img)
 
         lables = [["Original", "Gray", "Threshold", "Contours"],
                   ["Biggest Contour", "Warp Prespective", "Warp Gray", "Adaptive Threshold"]]
 
         # Display the image array
-        stackedImage = docScannerUtlis.stackImages(imageArray, 0.75, lables)
+        stackedImage = docScannerUtils.stackImages(imageArray, 0.75, lables)
         cv2.imshow("Result", stackedImage)
 
         # Save image on 's' key is press

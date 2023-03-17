@@ -1,69 +1,6 @@
 import cv2
 import numpy as np
 
-def scanDocumentsInImage(inputImage):
-    """Scan Documents in the input image
-
-    Args:
-        inputImage ([opencv Mat]): Input image  
-
-    Returns:
-        [imageArray]: Contains array of images
-    """
-    heightImg = 640
-    widthImg = 480
-    inputImage = cv2.resize(inputImage, (widthImg, heightImg))
-    imgBlank = np.zeros((heightImg, widthImg, 3), np.uint8)
-    imgGray = cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
-    imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 1)  # ADD GAUSSIAN BLUR
-    thres = docScannerUtlis.valTrackbars()  # GET TRACK BAR VALUES FOR THRESHOLDS
-    imgThreshold = cv2.Canny(imgBlur, thres[0], thres[1])  # APPLY CANNY BLUR
-    kernel = np.ones((5, 5))
-    imgDial = cv2.dilate(imgThreshold, kernel, iterations=2)  # APPLY DILATION
-    imgThreshold = cv2.erode(imgDial, kernel, iterations=1)  # APPLY EROSION
-
-    # FIND ALL COUNTOURS
-    imgContours = inputImage.copy()  # COPY IMAGE FOR DISPLAY PURPOSES
-    imgBigContour = inputImage.copy()  # COPY IMAGE FOR DISPLAY PURPOSES
-    contours, hierarchy = cv2.findContours(
-        imgThreshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # FIND ALL CONTOURS
-    cv2.drawContours(imgContours, contours, -1, (0, 255, 0),
-                     10)  # DRAW ALL DETECTED CONTOURS
-
-    # FIND THE BIGGEST COUNTOUR
-    biggest, maxArea = docScannerUtlis.biggestContour(
-        contours)  # FIND THE BIGGEST CONTOUR
-    if biggest.size != 0:
-        biggest = docScannerUtlis.reorder(biggest)
-        # DRAW THE BIGGEST CONTOUR
-        cv2.drawContours(imgBigContour, biggest, -1, (0, 255, 0), 20)
-        imgBigContour = docScannerUtlis.drawRectangle(imgBigContour, biggest, 2)
-        pts1 = np.float32(biggest)  # PREPARE POINTS FOR WARP
-        pts2 = np.float32([[0, 0], [widthImg, 0], [0, heightImg], [
-                          widthImg, heightImg]])  # PREPARE POINTS FOR WARP
-        matrix = cv2.getPerspectiveTransform(pts1, pts2)
-        imgWarpColored = cv2.warpPerspective(
-            inputImage, matrix, (widthImg, heightImg))
-
-        # REMOVE 20 PIXELS FORM EACH SIDE
-        imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] -
-                                        20, 20:imgWarpColored.shape[1] - 20]
-        imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
-
-        # APPLY ADAPTIVE THRESHOLD
-        imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
-        imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, 1, 1, 7, 2)
-        imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
-        imgAdaptiveThre = cv2.medianBlur(imgAdaptiveThre, 3)
-
-        # Image Array for Display
-        imageArray = ([inputImage, imgGray, imgThreshold, imgContours],
-                      [imgBigContour, imgWarpColored, imgWarpGray, imgAdaptiveThre])
-
-    else:
-        imageArray = ([inputImage, imgGray, imgThreshold, imgContours],
-                      [imgBlank, imgBlank, imgBlank, imgBlank])
-    return imageArray
 
 
 ## TO STACK ALL THE IMAGES IN ONE WINDOW
@@ -153,3 +90,68 @@ def valTrackbars():
     Threshold2 = cv2.getTrackbarPos("Threshold2", "Trackbars")
     src = Threshold1,Threshold2
     return src
+
+def scanDocumentsInImage(inputImage):
+    """Scan Documents in the input image
+
+    Args:
+        inputImage ([opencv Mat]): Input image  
+
+    Returns:
+        [imageArray]: Contains array of images
+    """
+    heightImg = 640
+    widthImg = 480
+    inputImage = cv2.resize(inputImage, (widthImg, heightImg))
+    imgBlank = np.zeros((heightImg, widthImg, 3), np.uint8)
+    imgGray = cv2.cvtColor(inputImage, cv2.COLOR_BGR2GRAY)
+    imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 1)  # ADD GAUSSIAN BLUR
+    thres = valTrackbars()  # GET TRACK BAR VALUES FOR THRESHOLDS
+    imgThreshold = cv2.Canny(imgBlur, thres[0], thres[1])  # APPLY CANNY BLUR
+    kernel = np.ones((5, 5))
+    imgDial = cv2.dilate(imgThreshold, kernel, iterations=2)  # APPLY DILATION
+    imgThreshold = cv2.erode(imgDial, kernel, iterations=1)  # APPLY EROSION
+
+    # FIND ALL COUNTOURS
+    imgContours = inputImage.copy()  # COPY IMAGE FOR DISPLAY PURPOSES
+    imgBigContour = inputImage.copy()  # COPY IMAGE FOR DISPLAY PURPOSES
+    contours, hierarchy = cv2.findContours(
+        imgThreshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # FIND ALL CONTOURS
+    cv2.drawContours(imgContours, contours, -1, (0, 255, 0),
+                     10)  # DRAW ALL DETECTED CONTOURS
+
+    # FIND THE BIGGEST COUNTOUR
+    biggest, maxArea = biggestContour(
+        contours)  # FIND THE BIGGEST CONTOUR
+    if biggest.size != 0:
+        biggest = reorder(biggest)
+        # DRAW THE BIGGEST CONTOUR
+        cv2.drawContours(imgBigContour, biggest, -1, (0, 255, 0), 20)
+        imgBigContour = drawRectangle(imgBigContour, biggest, 2)
+        pts1 = np.float32(biggest)  # PREPARE POINTS FOR WARP
+        pts2 = np.float32([[0, 0], [widthImg, 0], [0, heightImg], [
+                          widthImg, heightImg]])  # PREPARE POINTS FOR WARP
+        matrix = cv2.getPerspectiveTransform(pts1, pts2)
+        imgWarpColored = cv2.warpPerspective(
+            inputImage, matrix, (widthImg, heightImg))
+
+        # REMOVE 20 PIXELS FORM EACH SIDE
+        imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] -
+                                        20, 20:imgWarpColored.shape[1] - 20]
+        imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
+
+        # APPLY ADAPTIVE THRESHOLD
+        imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
+        imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, 1, 1, 7, 2)
+        imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
+        imgAdaptiveThre = cv2.medianBlur(imgAdaptiveThre, 3)
+
+        # Image Array for Display
+        imageArray = ([inputImage, imgGray, imgThreshold, imgContours],
+                      [imgBigContour, imgWarpColored, imgWarpGray, imgAdaptiveThre])
+
+    else:
+        imageArray = ([inputImage, imgGray, imgThreshold, imgContours],
+                      [imgBlank, imgBlank, imgBlank, imgBlank])
+    return imageArray
+

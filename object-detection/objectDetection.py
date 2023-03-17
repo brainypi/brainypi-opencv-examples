@@ -1,5 +1,6 @@
 import cv2
 import picamera
+import time
 
 threshold = 0.45  # Threshold to detect object
 
@@ -55,7 +56,7 @@ def detectObjects(img, thres, nms, draw=True, objects=[]):
 
 def main():
     cam = picamera.PiCamera()
-    cam.resolution = (640, 480)
+    cam.resolution = (1280, 720)
     time.sleep(2.0)
 
     while True:

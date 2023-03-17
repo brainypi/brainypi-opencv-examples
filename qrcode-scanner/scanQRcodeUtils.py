@@ -15,7 +15,7 @@ def scanQRCodes(img, draw=False):
         img [cv2.Mat]: image with QR code marked
     """
     qrDataList = []
-    for barcode in decode(inputImage, symbols=[ZBarSymbol.QRCODE]):
+    for barcode in decode(img, symbols=[ZBarSymbol.QRCODE]):
         qrData = barcode.data.decode('utf-8')
         pts = np.array([barcode.polygon], np.int32)
         pts = pts.reshape((-1, 1, 2))

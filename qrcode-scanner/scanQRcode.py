@@ -1,6 +1,7 @@
 import cv2
 import picamera
 import scanQRcodeUtils
+import time 
 
 
 def main():
@@ -14,7 +15,7 @@ def main():
             print("Failed to capture image from camera")
             break
             
-        qrDataList, img = scanQRcodeUtils.scanQRcode(img)
+        qrDataList, img = scanQRcodeUtils.scanQRCodes(img)
     
         print(qrDataList)
         cv2.imshow("Output", img)
