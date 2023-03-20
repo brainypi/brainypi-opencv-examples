@@ -3,7 +3,7 @@ import pytesseract
 import numpy as np
 from PIL import ImageGrab
 import time
-import picamera
+#import picamera
 
 def readCharacters(img, draw=False):
     """Read characters from image

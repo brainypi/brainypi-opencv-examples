@@ -3,17 +3,19 @@ import pytesseract
 import numpy as np
 from PIL import ImageGrab
 import time
-import picamera
+#import picamera
 import ocrUtils
 
 
 def main():
-    cam = picamera.PiCamera()
-    cam.resolution = (640, 480)
+    #cam = picamera.PiCamera()
+    cam = cv2.VideoCapture(0)
+    #cam.resolution = (640, 480)
     time.sleep(2.0)
 
     while True:
-        img = cam.source_camera()
+        #img = cam.source_camera()
+        cap, img = cam.read()
         if img is None:
             print("Failed to capture image from camera")
             break
@@ -25,8 +27,8 @@ def main():
         cv2.waitKey(1)
 
     # do a bit of cleanup
-    cv2.destroyAllWindows()
-    cam.close()
+    #cv2.destroyAllWindows()
+    #cam.close()
 
 
 if __name__ == "__main__":

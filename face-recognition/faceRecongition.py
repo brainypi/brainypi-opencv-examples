@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
 # import the necessary packages
-import picamera
+#import picamera
 import face_recognition
 import imutils
 import pickle
@@ -19,11 +19,13 @@ def main():
     # cascade for face detection
     print("[INFO] loading encodings + face detector...")
     data = pickle.loads(open(encodingsP, "rb").read())
-    cam = picamera.PiCamera()
+    #cam = picamera.PiCamera()
+    cam = cv2.VideoCapture(0)
     time.sleep(2.0)
     count=0
     while True:
-        frame = cam.source_camera()
+        #frame = cam.source_camera()
+        cap, frame = cam.read()
         if frame is None:
             print("Failed to capture image from camera")
             

@@ -1,17 +1,20 @@
 # Credits to https://github.com/murtazahassan/Document-Scanner
-import picamera
+#import picamera
 import cv2
 import numpy as np
 import docScannerUtils
 import time
+import sys
 
 def main():
-    cam = picamera.PiCamera()
+    #cam = picamera.PiCamera()
+    cam = cv2.VideoCapture(0)
     time.sleep(2.0)
     docScannerUtils.initializeTrackbars()
     count = 0
     while True:
-        img = cam.source_camera()
+        #img = cam.source_camera()
+        cap, img = cam.read()
         if img is None:
             print("Failed to capture image from camera")
 
@@ -26,7 +29,8 @@ def main():
 
         # Save image on 's' key is press
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            cv2.imwrite("Scanned/myImage"+str(count)+".jpg", imgWarpColored)
+            cv2.imwrite("brainypi-opencv-examples/document-scanner/Scanned/qmyImage"+str(count)+".jpg",stackedImage)
+            #cv2.imwrite(filename='saved_img.jpg', img=img)
             cv2.rectangle(stackedImage, ((int(stackedImage.shape[1] / 2) - 230), int(stackedImage.shape[0] / 2) + 50),
                           (1100, 350), (0, 255, 0), cv2.FILLED)
             cv2.putText(stackedImage, "Scan Saved", (int(stackedImage.shape[1] / 2) - 200, int(stackedImage.shape[0] / 2)),
@@ -37,6 +41,16 @@ def main():
             cv2.imshow('Result', stackedImage)
             cv2.waitKey(300)
             count += 1
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+        #    sys.exit()
+        #elif key == ord('q'):
+        elif cv2.waitKey(1) & 0xFF == ord('q'):
+            print("Turning off camera.")
+            cam.release()
+            print("Camera off.")
+            print("Program ended.")
+            cv2.destroyAllWindows()
+            break
     cam.close()
 
 
