@@ -1,4 +1,4 @@
-import picamera
+#import picamera
 import cv2
 import os
 # import the necessary packages
@@ -11,7 +11,8 @@ name = str(input("Enter your Name: "))
 
 print("[INFO] Registering user {}" .format(name))
 
-cam = picamera.PiCamera()
+#cam = picamera.PiCamera()
+
 time.sleep(2.0)
 
 cv2.namedWindow("Press space to register your face.", cv2.WINDOW_NORMAL)
@@ -20,7 +21,8 @@ cv2.resizeWindow("Press space to register your face.", 500, 300)
 img_counter = 0
 
 while True:
-    frame = cam.source_camera()
+    #frame = cam.source_camera()
+    cap, frame = cam.read()
     if frame is None:
         print("Failed to capture image from camera")
         break
