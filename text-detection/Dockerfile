@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y libglib2.0-0 libsm6 libxrender1 libxext
 
 COPY . .
 
-CMD ["python3", "documentScanner.py"]
+CMD ["python3", "ocr.py"]
 
 
-# docker run -d --name your-container-name --device /dev/video0 -v documentScanner.py:/app/documentScanner.py your-image-name
+# docker run -d --name your-container-name --device /dev/video0 -v ocr.py:/app/ocr.py your-image-name
 

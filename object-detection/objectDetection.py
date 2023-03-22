@@ -73,7 +73,7 @@ def main():
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
-    cam.close()
+    #cam.close()
 
 if __name__ == "__main__":
     main()

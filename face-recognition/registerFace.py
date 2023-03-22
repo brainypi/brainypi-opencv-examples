@@ -1,4 +1,4 @@
-import picamera
+#import picamera
 import cv2
 import os
 # import the necessary packages

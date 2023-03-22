@@ -19,5 +19,5 @@ COPY . .
 CMD ["python3", "documentScanner.py"]
 
 
-# docker run -d --name your-container-name --device /dev/video0 -v documentScanner.py:/app/documentScanner.py your-image-name
+# docker run -d --name sampleScanner --device /dev/video0 -v documentScanner.py:/app/documentScanner.py sample1
 
