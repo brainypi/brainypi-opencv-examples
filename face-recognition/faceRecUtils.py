@@ -1,5 +1,5 @@
 # import the necessary packages
-import picamera
+# import picamera
 import face_recognition
 import imutils
 import pickle

@@ -1,16 +1,18 @@
 import cv2
-import picamera
+#import picamera
 import scanQRcodeUtils
 import time 
 
 
 def main():
-    cam = picamera.PiCamera()
-    cam.resolution = (640, 480)
+    #cam = picamera.PiCamera()
+    cam = cv2.VideoCapture(0)
+    #cam.resolution = (640, 480)
     time.sleep(2.0)
 
     while True:
-        img = cam.source_camera()
+        #img = cam.source_camera()
+        cap, img = cam.read()
         if img is None:
             print("Failed to capture image from camera")
             break
