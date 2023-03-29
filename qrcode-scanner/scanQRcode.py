@@ -6,7 +6,7 @@ import time
 
 def main():
     #cam = picamera.PiCamera()
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(5)
     #cam.resolution = (640, 480)
     time.sleep(2.0)
 

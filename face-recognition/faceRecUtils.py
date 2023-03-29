@@ -6,7 +6,7 @@ import pickle
 import time
 import cv2
 
-def recogniseFace(inputImage):
+def recogniseFace(inputImage, data, currentname):
     """Recognise face
 
     Args:

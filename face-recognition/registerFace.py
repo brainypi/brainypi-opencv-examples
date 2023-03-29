@@ -6,12 +6,13 @@ from imutils import paths
 import face_recognition
 #import argparse
 import pickle
+import time
 
 name = str(input("Enter your Name: "))
 
 print("[INFO] Registering user {}" .format(name))
 
-#cam = picamera.PiCamera()
+cam = cv2.VideoCapture(5)
 
 time.sleep(2.0)
 
@@ -21,7 +22,6 @@ cv2.resizeWindow("Press space to register your face.", 500, 300)
 img_counter = 0
 
 while True:
-    #frame = cam.source_camera()
     cap, frame = cam.read()
     if frame is None:
         print("Failed to capture image from camera")
@@ -44,7 +44,7 @@ while True:
         img_counter += 1
         break
 
-#cam.release()
+cam.release()
 
 cv2.destroyAllWindows()
 

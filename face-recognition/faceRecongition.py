@@ -19,17 +19,15 @@ def main():
     # cascade for face detection
     print("[INFO] loading encodings + face detector...")
     data = pickle.loads(open(encodingsP, "rb").read())
-    #cam = picamera.PiCamera()
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(5)
     time.sleep(2.0)
     count=0
     while True:
-        #frame = cam.source_camera()
         cap, frame = cam.read()
         if frame is None:
             print("Failed to capture image from camera")
             
-        names, frame = faceRecUtils.recogniseFace(frame)
+        names, frame = faceRecUtils.recogniseFace(frame, data, currentname)
         
         # display the image to our screen
         cv2.imshow("Facial Recognition result", frame)

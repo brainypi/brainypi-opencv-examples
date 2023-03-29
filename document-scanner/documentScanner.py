@@ -8,7 +8,7 @@ import sys
 
 def main():
     #cam = picamera.PiCamera()
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(5)
     time.sleep(2.0)
     docScannerUtils.initializeTrackbars()
     count = 0

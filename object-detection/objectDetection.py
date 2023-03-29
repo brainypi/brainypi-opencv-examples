@@ -56,7 +56,7 @@ def detectObjects(img, thres, nms, draw=True, objects=[]):
 
 def main():
     #cam = picamera.PiCamera()
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(5)
     #cam.resolution = (1280, 720)
     time.sleep(2.0)
 
